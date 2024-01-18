@@ -9,5 +9,9 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "g": "^2.0.1",
+    "vercel": "^33.1.0"
+  }
 }

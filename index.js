@@ -18,6 +18,22 @@ const templateProduct = fs.readFileSync(
   "utf-8"
 );
 
+// Server
+const replaceTemplate = (temp, product) => {
+  let output = temp.replace(/{%ProductName%}/g, product.productName);
+  output = output.replace(/{%ProductImage%}/g, product.image);
+  output = output.replace(/{%ProductFrom%}/g, product.from);
+  output = output.replace(/{%ProductNutrients%}/g, product.nutrients);
+  output = output.replace(/{%ProductQuantity%}/g, product.quantity);
+  output = output.replace(/{%ProductPrice%}/g, product.price);
+  output = output.replace(/{%ProductDescription%}/g, product.description);
+  output = output.replace(/{%Id%}/g, product.id);
+  if (!product.organic) {
+    output = output.replace(/{%Not_Organic%}/g, "not-organic");
+  }
+  return output;
+};
+
 const server = http.createServer((req, res) => {
   //   console.log(req.url);
   const pathname = req.url;
@@ -27,7 +43,14 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {
       "Content-type": "text/html",
     });
-    res.end(templateOverview);
+
+    const cardHtml = dataObject
+      .map((el) => replaceTemplate(templateCard, el))
+      .join("");
+    // console.log(cardHtml);
+    const output = templateOverview.replace('{%Product_card%}', cardHtml)
+
+    res.end(output);
 
     // Product page
   } else if (pathname === "/product") {

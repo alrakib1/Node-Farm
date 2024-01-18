@@ -17,6 +17,10 @@ const templateProduct = fs.readFileSync(
   `${__dirname}/templates/product.html`,
   "utf-8"
 );
+const templateError = fs.readFileSync(
+  `${__dirname}/templates/error.html`,
+  "utf-8"
+);
 
 // Server
 const replaceTemplate = (temp, product) => {
@@ -35,7 +39,8 @@ const replaceTemplate = (temp, product) => {
 };
 
 const server = http.createServer((req, res) => {
-  //   console.log(req.url);
+    console.log(req.url);
+    console.log(url.parse(req.url, true));
   const pathname = req.url;
 
   // Overview page
@@ -68,7 +73,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(404, {
       "Content-type": "text/html",
     });
-    res.end("<h1>404 Page not found !!!</h1>");
+    res.end(templateError);
   }
 });
 
